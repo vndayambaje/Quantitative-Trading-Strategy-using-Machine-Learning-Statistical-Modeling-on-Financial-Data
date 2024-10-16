@@ -1,0 +1,12 @@
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+fpdf
+xgboost
+catboost   # Updated to a compatible version
+tensorflow==2.12.0
+yfinance
+python-dotenv
+transformers
