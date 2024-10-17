@@ -10,3 +10,4 @@ tensorflow==2.12.0
 yfinance
 python-dotenv
 transformers
+TA-Lib

@@ -1,23 +1,19 @@
 import yfinance as yf
 import pandas as pd
+import talib as ta
 
-# Function to fetch stock data using Ticker's history method
-def fetch_stock_data(symbol, start_date="2018-01-01"):
-    # Fetch stock data from yFinance
-    ticker = yf.Ticker(symbol)
-    data = ticker.history(start=start_date)
+# Fetch stock data from yFinance
+def fetch_stock_data(symbols, start_date="2018-01-01"):
+    stock_data = {}
     
-    # Handle missing 'Dividends' and 'Stock Splits' columns
-    if 'Dividends' in data.columns:
-        data['Dividends'].fillna(0, inplace=True)
-    
-    if 'Stock Splits' in data.columns:
-        data['Stock Splits'].fillna(0, inplace=True)
+    for symbol in symbols:
+        data = yf.download(symbol, start=start_date)
+        data['SMA_20'] = ta.SMA(data['Close'], timeperiod=20)
+        data['RSI'] = ta.RSI(data['Close'], timeperiod=14)
+        stock_data[symbol] = data
 
-    return data
+    return stock_data
 
-# Example: Fetch data for Apple and S&P500
-# You can expand this to fetch data for multiple stocks by looping over a list of symbols.
-apple_data = fetch_stock_data('AAPL')
-sp500_data = fetch_stock_data('SPY')  # S&P 500 Index
-
+# Example usage
+symbols = ['AAPL', 'MSFT', 'GOOGL', 'SPY']
+stock_data = fetch_stock_data(symbols)
